@@ -69,6 +69,7 @@
 		<dependency>
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
+			<scope>runtime</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.postgresql</groupId>
@@ -98,27 +99,40 @@
 
 	<profiles>
 		<profile>
-			<id>postgre</id>
+			<id>callback</id>
 			<activation>
 				<activeByDefault>false</activeByDefault>
 			</activation>
 			<properties>
-				<build.profile.id>postgre</build.profile.id>
-				<profileActive>postgre</profileActive>
+				<spring.profiles.active>callback</spring.profiles.active>
 			</properties>
 		</profile>
 		<profile>
-			<id>h2</id>
+			<id>dev</id>
 			<activation>
 				<activeByDefault>false</activeByDefault>
 			</activation>
 			<properties>
-				<build.profile.id>h2</build.profile.id>
-				<profileActive>h2</profileActive>
+				<spring.profiles.active>dev</spring.profiles.active>
+			</properties>
+		</profile>
+		<profile>
+			<id>test</id>
+			<activation>
+				<activeByDefault>false</activeByDefault>
+			</activation>
+			<properties>
+				<spring.profiles.active>test</spring.profiles.active>
 			</properties>
 		</profile>
 	</profiles>
 	<build>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+			</resource>
+		</resources>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
