@@ -5,18 +5,18 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.Entity;
-import javax.persistence.ManyToMany;
-import javax.persistence.Table;
+import javax.persistence.OneToMany;
 import java.util.Collection;
 
 @Entity
-@Table(name="privilege")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Privilege extends EntityWithUUID {
-    private String name;
+public class Category extends EntityWithUUID {
 
-    @ManyToMany(mappedBy = "privileges")
-    private Collection<Role> roles;
+    private String nom;
+
+    @OneToMany
+    private Collection<SousCategorie> sousCategories;
+
 }

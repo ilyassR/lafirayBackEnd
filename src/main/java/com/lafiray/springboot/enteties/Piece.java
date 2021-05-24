@@ -5,18 +5,16 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.Entity;
-import javax.persistence.ManyToMany;
 import javax.persistence.Table;
-import java.util.Collection;
 
 @Entity
-@Table(name="privilege")
+@Table(name="piece")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Privilege extends EntityWithUUID {
-    private String name;
+public class Piece extends EntityWithUUID {
 
-    @ManyToMany(mappedBy = "privileges")
-    private Collection<Role> roles;
+    private String nom;
+
+    private float prix;
 }
