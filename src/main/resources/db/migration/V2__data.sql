@@ -47,3 +47,45 @@ INSERT INTO roles_privileges(
     '531e4cdd-bb78-4769-a0c7-cb948a9f1239',
     '531e4cdd-bb78-4769-a0c7-cb948a9f1240'
 );
+
+INSERT INTO car
+    (id,
+    marque,
+    model,
+    motorisation)
+VALUES (
+    '531e4cdd-bb78-4769-a0c7-cb948a9f1250',
+    'Mercedes',
+    'AMG',
+    'DIESEL'
+);
+
+INSERT INTO category
+    (id,
+    nom)
+VALUES (
+    '531e4cdd-bb78-4769-a0c7-cb948a9f1260',
+    'AUTO'
+);
+
+INSERT INTO subcategory
+    (id,
+    category_id,
+    nom)
+VALUES (
+    '531e4cdd-bb78-4769-a0c7-cb948a9f1270',
+    '531e4cdd-bb78-4769-a0c7-cb948a9f1260',
+    'AUTO'
+);
+
+INSERT INTO piece
+    (id,
+    subcategory_id,
+    nom,
+    prix)
+VALUES (
+    '531e4cdd-bb78-4769-a0c7-cb948a9f1280',
+    '531e4cdd-bb78-4769-a0c7-cb948a9f1270',
+    'AUTO',
+    200
+);

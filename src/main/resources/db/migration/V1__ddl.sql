@@ -8,6 +8,14 @@ drop table if exists persons_roles;
 
 drop table if exists roles_privileges;
 
+drop table if exists car;
+
+drop table if exists category;
+
+drop table if exists subcategory;
+
+drop table if exists piece;
+
 create table person (
     id UUID NOT NULL,
     first_name VARCHAR(200),
@@ -29,7 +37,6 @@ create table privilege(
     name VARCHAR(100),
     PRIMARY KEY (id)
 );
-
 create table persons_roles(
     person_id UUID NOT NULL,
     role_id UUID NOT NULL,
@@ -37,11 +44,36 @@ create table persons_roles(
     FOREIGN KEY (role_id) REFERENCES role(id),
     UNIQUE (person_id, role_id)
 );
-
 create table roles_privileges(
     role_id UUID NOT NULL,
     privilege_id UUID NOT NULL,
     FOREIGN KEY (role_id) REFERENCES role(id),
     FOREIGN KEY (privilege_id) REFERENCES privilege(id),
     UNIQUE(role_id, privilege_id)
+);
+create table car(
+    id UUID NOT NULL,
+    marque VARCHAR(100),
+    model VARCHAR(100),
+    motorisation VARCHAR(100),
+    PRIMARY KEY (id)
+);
+create table category(
+    id UUID NOT NULL UNIQUE,
+    nom VARCHAR(100)
+);
+
+create table subcategory(
+    id UUID NOT NULL UNIQUE,
+    category_id UUID NOT NULL,
+    nom VARCHAR(100),
+    FOREIGN KEY (category_id) REFERENCES category(id)
+);
+
+create table piece(
+    id UUID NOT NULL,
+    subcategory_id UUID NOT NULL,
+    nom VARCHAR(100),
+    prix FLOAT,
+    FOREIGN KEY (subcategory_id) REFERENCES subcategory(id)
 );

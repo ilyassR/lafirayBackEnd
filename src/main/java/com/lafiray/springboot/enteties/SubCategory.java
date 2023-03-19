@@ -8,15 +8,17 @@ import javax.persistence.*;
 import java.util.Collection;
 
 @Entity
-@Table(name="category")
+@Table(name="subcategory")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Category extends EntityWithUUID {
-
+public class SubCategory extends EntityWithUUID {
     private String nom;
 
-    @OneToMany(mappedBy="category",cascade= CascadeType.ALL)
-    private Collection<SubCategory> subcategories;
+    @ManyToOne
+    @JoinColumn(name = "category_id")
+    private Category category;
 
+    @OneToMany(mappedBy="subCategory",cascade= CascadeType.ALL)
+    private Collection<Piece> pieces;
 }
