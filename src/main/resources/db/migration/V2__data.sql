@@ -62,20 +62,48 @@ VALUES (
 
 INSERT INTO category
     (id,
-    nom)
+    name)
 VALUES (
     '531e4cdd-bb78-4769-a0c7-cb948a9f1260',
-    'AUTO'
+    'Classic'
+);
+
+INSERT INTO category
+    (id,
+    name)
+VALUES (
+    '531e4cdd-bb78-4769-a0c7-cb948a9f1261',
+    'moderne'
 );
 
 INSERT INTO subcategory
     (id,
     category_id,
-    nom)
+    name)
 VALUES (
     '531e4cdd-bb78-4769-a0c7-cb948a9f1270',
     '531e4cdd-bb78-4769-a0c7-cb948a9f1260',
-    'AUTO'
+    'Cabriolet'
+);
+
+INSERT INTO subcategory
+    (id,
+    category_id,
+    name)
+VALUES (
+    '531e4cdd-bb78-4769-a0c7-cb948a9f1271',
+    '531e4cdd-bb78-4769-a0c7-cb948a9f1260',
+    'Coupé'
+);
+
+INSERT INTO subcategory
+    (id,
+    category_id,
+    name)
+VALUES (
+    '531e4cdd-bb78-4769-a0c7-cb948a9f1272',
+    '531e4cdd-bb78-4769-a0c7-cb948a9f1261',
+    'Berline'
 );
 
 INSERT INTO piece

@@ -1,19 +1,21 @@
 package com.lafiray.springboot.enteties;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
 import java.util.Collection;
 
 @Entity
 @Table(name="subcategory")
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@SuperBuilder
+@EqualsAndHashCode
 public class SubCategory extends EntityWithUUID {
-    private String nom;
+    private String name;
 
     @ManyToOne
     @JoinColumn(name = "category_id")

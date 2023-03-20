@@ -60,13 +60,13 @@ create table car(
 );
 create table category(
     id UUID NOT NULL UNIQUE,
-    nom VARCHAR(100)
+    name VARCHAR(100)
 );
 
 create table subcategory(
     id UUID NOT NULL UNIQUE,
     category_id UUID NOT NULL,
-    nom VARCHAR(100),
+    name VARCHAR(100),
     FOREIGN KEY (category_id) REFERENCES category(id)
 );
 
