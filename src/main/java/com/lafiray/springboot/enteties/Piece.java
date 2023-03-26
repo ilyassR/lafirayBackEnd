@@ -1,16 +1,18 @@
 package com.lafiray.springboot.enteties;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
 
 @Entity
 @Table(name="piece")
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@SuperBuilder
 public class Piece extends EntityWithUUID {
 
     private String nom;
@@ -19,5 +21,6 @@ public class Piece extends EntityWithUUID {
 
     @ManyToOne
     @JoinColumn(name = "subcategory_id")
+    @JsonBackReference
     private SubCategory subCategory;
 }

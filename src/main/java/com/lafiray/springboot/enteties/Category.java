@@ -1,10 +1,14 @@
 package com.lafiray.springboot.enteties;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
 import java.util.Collection;
+import java.util.List;
 
 @Entity
 @Table(name="category")
@@ -14,11 +18,16 @@ import java.util.Collection;
 @NoArgsConstructor
 @SuperBuilder
 @EqualsAndHashCode
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "id"
+)
 public class Category extends EntityWithUUID {
 
     private String name;
 
     @OneToMany(mappedBy="category",cascade= CascadeType.ALL)
-    private Collection<SubCategory> subcategories;
+    @JsonManagedReference
+    private List<SubCategory> subcategories;
 
 }

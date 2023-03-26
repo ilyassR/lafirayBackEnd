@@ -1,5 +1,7 @@
 package com.lafiray.springboot.repository;
-import static org.assertj.core.api.Assertions.*;
+
+import static org.junit.jupiter.api.Assertions.*;
+
 import com.lafiray.springboot.enteties.Category;
 import com.lafiray.springboot.enteties.SubCategory;
 import org.assertj.core.api.Assertions;
@@ -10,6 +12,7 @@ import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Sort;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
@@ -19,8 +22,12 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-import static org.junit.jupiter.api.Assertions.*;
-
+/*
+Nowadays Unit Test is so important in Software Development, and Spring Framework also
+provides @DataJpaTest annotation to make writing test for JPA Repository more simpler.
+In this tutorial, we’re gonna look at how to apply @DataJpaTest in our Spring Boot Project
+with TestEntityManager, then run with JUnit 5.
+ */
 @DataJpaTest
 class SubCategoryRepositoryTest {
 
@@ -60,6 +67,22 @@ class SubCategoryRepositoryTest {
     }
 
     @Test
+    void findByNameContaining() {
+        assertEquals(1, 1);
+        List<SubCategory> s = subCategoryRepository.findByNameContaining("Cabr");
+        assertFalse(s.isEmpty());
+        assertEquals(1, s.size());
+    }
+
+    @Test
+    void findByNameContainingIgnoreCase() {
+        assertEquals(1, 1);
+        List<SubCategory> s = subCategoryRepository.findByNameContainingIgnoreCase("cABr");
+        assertFalse(s.isEmpty());
+        assertEquals(1, s.size());
+    }
+
+    @Test
     void findByCategoryName() {
         assertEquals(1, 1);
         List<SubCategory> s = subCategoryRepository.findByCategoryName("Classic");
@@ -77,5 +100,43 @@ class SubCategoryRepositoryTest {
                 .containsExactlyInAnyOrder(
                         s1.getCategory().getName(), s2.getCategory().getName()
                 );
+    }
+
+    @Test
+    void findByCategoryNameContainsIgnoreCaseOrderByNameAsc() {
+        assertEquals(1, 1);
+        List<SubCategory> s = subCategoryRepository.findByCategoryNameContainsIgnoreCaseOrderByNameAsc("Classic");
+        assertFalse(s.isEmpty());
+        assertEquals(2, s.size());
+        assertEquals("Cabriolet", s.get(0).getName());
+        assertEquals("Coupé", s.get(1).getName());
+    }
+
+    @Test
+    void findByCategoryNameContainsIgnoreCaseOrderByNameDesc() {
+        List<SubCategory> s = subCategoryRepository.findByCategoryNameContainsIgnoreCaseOrderByNameDesc("Classic");
+        assertFalse(s.isEmpty());
+        assertEquals(2, s.size());
+        assertEquals("Coupé", s.get(0).getName());
+        assertEquals("Cabriolet", s.get(1).getName());
+    }
+
+
+    void findByCategoryNameContainsIgnore() {
+        assertEquals(1, 1);
+        //Sort sort = new Sort(Sort.Direction.ASC, "name");
+        //List<SubCategory> s = subCategoryRepository.findByCategoryNameContainsIgnore("Classic", sort);
+        //assertFalse(s.isEmpty());
+        //assertEquals(2, s.size());
+        //assertEquals("Coupé", s.get(0).getName());
+        //assertEquals("Cabriolet", s.get(1).getName());
+    }
+
+    @Test
+    void findFirst1ByCategoryNameContainsIgnoreCase() {
+        List<SubCategory> s = subCategoryRepository.findFirst1ByCategoryNameContainsIgnoreCaseOrderByNameDesc("Classic");
+        assertFalse(s.isEmpty());
+        assertEquals(1, s.size());
+        assertEquals("Coupé", s.get(0).getName());
     }
 }
