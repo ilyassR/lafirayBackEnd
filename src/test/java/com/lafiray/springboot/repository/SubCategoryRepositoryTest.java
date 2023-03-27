@@ -122,14 +122,19 @@ class SubCategoryRepositoryTest {
     }
 
 
+    @Test
+    @Transactional
     void findByCategoryNameContainsIgnore() {
         assertEquals(1, 1);
-        //Sort sort = new Sort(Sort.Direction.ASC, "name");
-        //List<SubCategory> s = subCategoryRepository.findByCategoryNameContainsIgnore("Classic", sort);
-        //assertFalse(s.isEmpty());
-        //assertEquals(2, s.size());
-        //assertEquals("Coupé", s.get(0).getName());
-        //assertEquals("Cabriolet", s.get(1).getName());
+        Sort sort = Sort.by(Sort.Direction.ASC, "name");
+        List<SubCategory> s = subCategoryRepository.findByCategoryNameContainsIgnoreCase("Classic", sort);
+        assertFalse(s.isEmpty());
+        assertEquals(2, s.size());
+        Assertions.assertThat(s)
+                .extracting(SubCategory::getName)
+                .containsExactly("Cabriolet", "Coupé");
+        assertEquals("Cabriolet", s.get(0).getName());
+        assertEquals("Coupé", s.get(1).getName());
     }
 
     @Test

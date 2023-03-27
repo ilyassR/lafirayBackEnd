@@ -11,6 +11,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.transaction.annotation.Transactional;
 import utilities.JsonUtils;
 
@@ -40,7 +43,11 @@ public class CategoryRepositoryTest {
                 .id(id)
                 .name("c3")
                 .build();
-        categoryRepository.saveAll(List.of(c1, c2, c3));
+        Category d1 = Category.builder()
+                .id(UUID.randomUUID())
+                .name("d1")
+                .build();
+        categoryRepository.saveAll(List.of(c1, c2, c3, d1));
     }
 
     @Test
@@ -101,5 +108,47 @@ public class CategoryRepositoryTest {
                 .extracting(Category::getName)
                 .containsExactly("moderne", "c3", "c2", "c1", "Classic");
         //log.info("results : " + JsonUtils.toJson(categoryList));
+    }
+
+    @Test
+    @Transactional
+    void testFindNomCategoryTriee() throws JsonProcessingException {
+        log.info("...testFindNomCategoryTriee...");
+        Sort sort = Sort.by(Sort.Direction.ASC, "name");
+        List<Category> categoryList = categoryRepository.findNomCategoryOrderParameter("c", sort);
+        Assertions.assertThat(categoryList)
+                .extracting(Category::getName)
+                .containsExactly("Classic", "c1", "c2", "c3");
+    }
+
+    @Test
+    @Transactional
+    void testFindBynomeCatContainingIgnoreCase() throws JsonProcessingException {
+        log.info("...findBynomeCatContainingIgnoreCaseSort...");
+        List<Category> categoryList = categoryRepository.findBynomeCatContainingIgnoreCase("d");
+        Assertions.assertThat(categoryList)
+                .extracting(Category::getName)
+                .containsExactlyInAnyOrder("d1", "moderne");
+    }
+
+    @Test
+    @Transactional
+    void testFindAllCategoryPaginated() throws JsonProcessingException {
+        log.info("...findAllCategoryPaginated...");
+        Pageable pageable = PageRequest.of(0, 3);
+        List<Category> categoryList = categoryRepository.findAllCategoryPaginated("c", pageable);
+        Assertions.assertThat(categoryList)
+                .extracting(Category::getName)
+                .containsExactlyInAnyOrder("Classic", "c1", "c2");
+    }
+
+    @Test
+    @Transactional
+    void testFindAllAcategorySpELExpressions() throws JsonProcessingException {
+        log.info("...findAllAcategorySpELExpressions...");
+        List<Category> categoryList = categoryRepository.findAllAcategorySpELExpressions("c");
+        Assertions.assertThat(categoryList)
+                .extracting(Category::getName)
+                .containsExactlyInAnyOrder("Classic", "c1", "c2", "c3");
     }
 }

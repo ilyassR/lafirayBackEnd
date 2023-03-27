@@ -2,6 +2,8 @@ package com.lafiray.springboot.repository;
 
 import com.lafiray.springboot.enteties.Category;
 import com.lafiray.springboot.enteties.SubCategory;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
@@ -22,4 +24,18 @@ public interface CategoryRepository extends CrudRepository<Category, UUID> {
 
     @Query("FROM Category ORDER BY name DESC")
     List<Category> findAllCatgorySortByNameDESC();
+
+    @Query("FROM Category WHERE UPPER(name) LIKE CONCAT('%', UPPER(?1), '%')")
+    List<Category> findNomCategoryOrderParameter(String name, Sort sort);
+
+    @Query("FROM Category WHERE UPPER(name) LIKE CONCAT('%', UPPER(?1), '%')")
+    List<Category> findBynomeCatContainingIgnoreCase(String name);
+
+    // Paginating Query Results
+    @Query("FROM Category WHERE UPPER(name) LIKE CONCAT('%', UPPER(?1),'%')")
+    List<Category> findAllCategoryPaginated(String name, Pageable pageable);
+
+    /**SpEL Expressions*/
+    @Query("FROM #{#entityName} WHERE UPPER(name) LIKE %?#{[0].toUpperCase()}%")
+    List<Category> findAllAcategorySpELExpressions(String name);
 }
