@@ -103,7 +103,7 @@
 			<scope>test</scope>
 		</dependency>
 
-		<!-- Jackson -->
+		<!-- Jackson . -->
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-databind</artifactId>
