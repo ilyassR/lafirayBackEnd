@@ -30,6 +30,10 @@ public class CategoryRepositoryTest {
 
     @BeforeEach
     void setup() {
+        Category c1_1 = Category.builder()
+                .id(UUID.randomUUID())
+                .name("c1")
+                .build();
         Category c1 = Category.builder()
                 .id(UUID.randomUUID())
                 .name("c1")
@@ -47,7 +51,7 @@ public class CategoryRepositoryTest {
                 .id(UUID.randomUUID())
                 .name("d1")
                 .build();
-        categoryRepository.saveAll(List.of(c1, c2, c3, d1));
+        categoryRepository.saveAll(List.of(c1, c1_1, c2, c3, d1));
     }
 
     @Test
@@ -64,11 +68,11 @@ public class CategoryRepositoryTest {
         log.info("...testFindAll...");
         List<Category> categoryList = categoryRepository.findByName("c1");
         assertFalse(categoryList.isEmpty());
-        assertEquals(1, categoryList.size());
+        assertEquals(2, categoryList.size());
         Assertions.assertThat(categoryList)
                 .extracting(Category::getName)
                 .containsExactlyInAnyOrder(
-                        "c1"
+                        "c1", "c1"
                 );
     }
 
@@ -91,10 +95,9 @@ public class CategoryRepositoryTest {
     void testFindAllCatgorySortByNameASC() throws JsonProcessingException {
         log.info("...testFindAllCatgorySortByName...");
         List<Category> categoryList = categoryRepository.findAllCatgorySortByNameASC();
-        assertEquals(1,1);
         Assertions.assertThat(categoryList)
                 .extracting(Category::getName)
-                .containsExactly("Classic", "c1", "c2", "c3", "moderne");
+                .containsExactly("Classic", "c1", "c1", "c2", "c3", "d1", "moderne");
 
         //log.info("results : " + JsonUtils.toJson(categoryList));
     }
@@ -106,7 +109,7 @@ public class CategoryRepositoryTest {
         List<Category> categoryList = categoryRepository.findAllCatgorySortByNameDESC();
         Assertions.assertThat(categoryList)
                 .extracting(Category::getName)
-                .containsExactly("moderne", "c3", "c2", "c1", "Classic");
+                .containsExactly("moderne", "d1", "c3", "c2", "c1", "c1", "Classic");
         //log.info("results : " + JsonUtils.toJson(categoryList));
     }
 
@@ -118,7 +121,7 @@ public class CategoryRepositoryTest {
         List<Category> categoryList = categoryRepository.findNomCategoryOrderParameter("c", sort);
         Assertions.assertThat(categoryList)
                 .extracting(Category::getName)
-                .containsExactly("Classic", "c1", "c2", "c3");
+                .containsExactly("Classic", "c1", "c1", "c2", "c3");
     }
 
     @Test
@@ -135,11 +138,11 @@ public class CategoryRepositoryTest {
     @Transactional
     void testFindAllCategoryPaginated() throws JsonProcessingException {
         log.info("...findAllCategoryPaginated...");
-        Pageable pageable = PageRequest.of(0, 3);
+        Pageable pageable = PageRequest.of(0, 4);
         List<Category> categoryList = categoryRepository.findAllCategoryPaginated("c", pageable);
         Assertions.assertThat(categoryList)
                 .extracting(Category::getName)
-                .containsExactlyInAnyOrder("Classic", "c1", "c2");
+                .containsExactlyInAnyOrder("Classic", "c1", "c1", "c2");
     }
 
     @Test
@@ -149,6 +152,16 @@ public class CategoryRepositoryTest {
         List<Category> categoryList = categoryRepository.findAllAcategorySpELExpressions("c");
         Assertions.assertThat(categoryList)
                 .extracting(Category::getName)
-                .containsExactlyInAnyOrder("Classic", "c1", "c2", "c3");
+                .containsExactlyInAnyOrder("Classic", "c1", "c1", "c3");
+    }
+
+    @Test
+    @Transactional
+    void testFindAllCategoriesWithNativeQuery() throws JsonProcessingException {
+        log.info("...findAllCategoriesWithNativeQuery...");
+        List<Category> categoryList = categoryRepository.findAllCategoriesWithNativeQuery("c1");
+        Assertions.assertThat(categoryList)
+                .extracting(Category::getName)
+                .containsExactlyInAnyOrder("c1", "c1");
     }
 }

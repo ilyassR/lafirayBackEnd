@@ -144,4 +144,9 @@ class SubCategoryRepositoryTest {
         assertEquals(1, s.size());
         assertEquals("Coupé", s.get(0).getName());
     }
+
+    @Test
+    void findByIdAndName() {
+
+    }
 }

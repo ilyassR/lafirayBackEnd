@@ -6,6 +6,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 import java.util.UUID;
@@ -38,4 +39,8 @@ public interface CategoryRepository extends CrudRepository<Category, UUID> {
     /**SpEL Expressions*/
     @Query("FROM #{#entityName} WHERE UPPER(name) LIKE %?#{[0].toUpperCase()}%")
     List<Category> findAllAcategorySpELExpressions(String name);
+
+    /**Native query*/
+    @Query(value = "SELECT * FROM Category WHERE name = :category_name", nativeQuery = true)
+    List<Category> findAllCategoriesWithNativeQuery(@Param("category_name") String name);
 }

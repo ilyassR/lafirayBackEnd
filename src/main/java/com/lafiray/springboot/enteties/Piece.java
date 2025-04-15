@@ -23,4 +23,8 @@ public class Piece extends EntityWithUUID {
     @JoinColumn(name = "subcategory_id")
     @JsonBackReference
     private SubCategory subCategory;
+/**
+    @Column(name = "colone_asupprimer_apres")
+    private String coloneAsupprimerApres;
+*/
 }

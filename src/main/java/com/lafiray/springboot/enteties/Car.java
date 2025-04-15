@@ -6,10 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.Date;
 
 @Entity
@@ -29,4 +27,8 @@ public class Car extends EntityWithUUID {
     //Disel; Essence
     @Enumerated(EnumType.STRING)
     private MotorisationEnum motorisation;
+/**
+    @Column(name = "date_de_mise_en_circulation")
+    private LocalDate dateDeMiseEnCirculation;
+*/
 }
